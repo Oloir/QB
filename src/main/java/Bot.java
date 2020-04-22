@@ -25,9 +25,7 @@ public class Bot extends TelegramLongPollingBot{
 
         //НАСТРОЙКИ ПРОКСИ ПРИ ВКЛЮЧЕННОМ ТОРЕ
         System.getProperties().put("proxySet", "true");
-
         System.getProperties().put("socksProxyHost", "127.0.0.1");
-
         System.getProperties().put("socksProxyPort", "9150");
         // ЗАПИХНУТЬ В КОНФИГ
 
@@ -48,55 +46,52 @@ public class Bot extends TelegramLongPollingBot{
     public void sendMsg(Message message, String text){
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
-//        sendMessage.enableMarkdownV2(true);
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
        try{
-
-     //      setButtons(sendMessage);
+           setButtons(sendMessage);
            execute(sendMessage);
-
        }catch (TelegramApiException e){
            e.printStackTrace();
         }
-
-
-
-
     }
 
 
     public void onUpdateReceived(Update update) {
-        if(update.hasMessage()){
-            if(update.getMessage().hasText()){
-                if(update.getMessage().getText().equals("Hello")){
-                    try {
-                        execute(sendInlineKeyBoardMessage(update.getMessage().getChatId()));
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }else if(update.hasCallbackQuery()){
-            try {
-                execute(new SendMessage().setText(
-                        update.getCallbackQuery().getData())
-                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
 
+// СТАРАЯ МОДЕЛЬ
+//        if(update.hasMessage()){
+//            if(update.getMessage().hasText()){
+//                if(update.getMessage().getText().equals("Hello")){
+//                    try {
+//                        execute(sendInlineKeyBoardMessage(update.getMessage().getChatId()));
+//                    } catch (TelegramApiException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }else if(update.hasCallbackQuery()){
+//            try {
+//                execute(new SendMessage().setText(
+//                        update.getCallbackQuery().getData())
+//                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
+//            } catch (TelegramApiException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
 
         ArrayList<String> List1 = new ArrayList<String>();
         Message message = update.getMessage();
         if(message !=null && message.hasText()){
             switch (message.getText()){
-//
-
+                case "Дай цитату!":
+                    Quote QQ = new Quote();
+                    sendMsg(message, QQ.getQuote());
+                    break;
                 default:
+                    sendMsg(message, "Записал!");
                     FileWriter FW = null;
                     try {
                         FW = new FileWriter("C:/Users/Public/test.txt", true);
@@ -119,65 +114,60 @@ public class Bot extends TelegramLongPollingBot{
                         e.printStackTrace();
                     }
                     List1.add(message.getText());
-
                     break;
 
-
             }
-
-
-
-
             }
         }
 
 
 
 
+//Старая клавиатура
+
+//    public static SendMessage sendInlineKeyBoardMessage(long chatId) {
+//
+//
+//
+//        Quote QuoM = new Quote();
 
 
-    public static SendMessage sendInlineKeyBoardMessage(long chatId) {
 
+//        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+//        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
+//
+//        inlineKeyboardButton1.setText("дай цитату!");
+//        inlineKeyboardButton1.setCallbackData(QuoM.GetQuote());
+//
+//        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+//
+//        keyboardButtonsRow1.add(inlineKeyboardButton1);
+//
+//
+//        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+//        rowList.add(keyboardButtonsRow1);
+//        inlineKeyboardMarkup.setKeyboard(rowList);
+//        return new SendMessage().setChatId(chatId).setText("!!!").setReplyMarkup(inlineKeyboardMarkup);
+//    }
 
+// Новая клавиатура
 
-        Quote QuoM = new Quote();
+    public void setButtons(SendMessage sendMessage) {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
 
+        List<KeyboardRow> keyboardRowsList = new ArrayList<>();
 
+        KeyboardRow firstRow = new KeyboardRow();
 
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
+        firstRow.add(new KeyboardButton("Дай цитату!"));
 
-        inlineKeyboardButton1.setText("дай цитату!");
-        inlineKeyboardButton1.setCallbackData(QuoM.GetQuote());
-
-        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-
-        keyboardButtonsRow1.add(inlineKeyboardButton1);
-
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow1);
-        inlineKeyboardMarkup.setKeyboard(rowList);
-        return new SendMessage().setChatId(chatId).setText("Пример").setReplyMarkup(inlineKeyboardMarkup);
+        keyboardRowsList.add(firstRow);
+        replyKeyboardMarkup.setKeyboard(keyboardRowsList);
     }
-
-
-
-
-//        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-//        sendMessage.setReplyMarkup(replyKeyboardMarkup);
-//        replyKeyboardMarkup.setSelective(true);
-//        replyKeyboardMarkup.setResizeKeyboard(true);
-//        replyKeyboardMarkup.setOneTimeKeyboard(false);
-//
-//        List<KeyboardRow> keyboardRowsList = new ArrayList<>();
-//
-//        KeyboardRow firstRow = new KeyboardRow();
-//
-//        firstRow.add(new KeyboardButton("Дай цитату!"));
-//
-//        keyboardRowsList.add(firstRow);
-//        replyKeyboardMarkup.setKeyboard(keyboardRowsList);
 
 
 

@@ -34,7 +34,7 @@ public class Quote  {
 
 
 
-    public String GetQuote() {
+    public String getQuote() {
 
 
 
