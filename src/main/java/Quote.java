@@ -1,7 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,35 +7,8 @@ import java.util.Scanner;
 public class Quote  {
     ArrayList<String> List1 = new ArrayList<String>();
     Scanner Scan;
-    public String Quote;
-
-
-
-
-    public void write() throws IOException {
-
-
-
-                FileWriter FW = new FileWriter("C:/Users/Public/test.txt", true);
-                FW.write("\n" + Quote);
-                FW.flush();
-                FW.close();
-
-
-        List1.add(Quote);
-    }
-
-
-
-
-
-
-
 
     public String getQuote() {
-
-
-
 
         {
             try {
@@ -59,20 +30,4 @@ public class Quote  {
             return (List1.get(x));
         }
     }
-
-
-
-
-    public void Quote(String quote) {
-        Quote = quote;
-    }
-
-
-
-//    public void Add() {
-//        List1.add(Quote);
-//    }
-
-
-
 }

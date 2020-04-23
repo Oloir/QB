@@ -1,13 +1,10 @@
-// import com.sun.org.apache.xpath.internal.operations.Quo;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -16,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
 
 
 public class Bot extends TelegramLongPollingBot{
@@ -60,28 +57,6 @@ public class Bot extends TelegramLongPollingBot{
 
     public void onUpdateReceived(Update update) {
 
-// СТАРАЯ МОДЕЛЬ
-//        if(update.hasMessage()){
-//            if(update.getMessage().hasText()){
-//                if(update.getMessage().getText().equals("Hello")){
-//                    try {
-//                        execute(sendInlineKeyBoardMessage(update.getMessage().getChatId()));
-//                    } catch (TelegramApiException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }else if(update.hasCallbackQuery()){
-//            try {
-//                execute(new SendMessage().setText(
-//                        update.getCallbackQuery().getData())
-//                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
-//            } catch (TelegramApiException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-
         ArrayList<String> List1 = new ArrayList<String>();
         Message message = update.getMessage();
         if(message !=null && message.hasText()){
@@ -89,6 +64,9 @@ public class Bot extends TelegramLongPollingBot{
                 case "Дай цитату!":
                     Quote QQ = new Quote();
                     sendMsg(message, QQ.getQuote());
+                    break;
+                case "Спасибо!":
+                    sendMsg(message, "Пожалуйста!");
                     break;
                 default:
                     sendMsg(message, "Записал!");
@@ -120,36 +98,6 @@ public class Bot extends TelegramLongPollingBot{
             }
         }
 
-
-
-
-//Старая клавиатура
-
-//    public static SendMessage sendInlineKeyBoardMessage(long chatId) {
-//
-//
-//
-//        Quote QuoM = new Quote();
-
-
-
-//        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-//        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-//
-//        inlineKeyboardButton1.setText("дай цитату!");
-//        inlineKeyboardButton1.setCallbackData(QuoM.GetQuote());
-//
-//        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-//
-//        keyboardButtonsRow1.add(inlineKeyboardButton1);
-//
-//
-//        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-//        rowList.add(keyboardButtonsRow1);
-//        inlineKeyboardMarkup.setKeyboard(rowList);
-//        return new SendMessage().setChatId(chatId).setText("!!!").setReplyMarkup(inlineKeyboardMarkup);
-//    }
-
 // Новая клавиатура
 
     public void setButtons(SendMessage sendMessage) {
@@ -169,16 +117,11 @@ public class Bot extends TelegramLongPollingBot{
         replyKeyboardMarkup.setKeyboard(keyboardRowsList);
     }
 
-
-
-
-
-
+//  Конфиг
 
     public String getBotUsername() {
         return "QueBotBot";
     }
-
 
     public String getBotToken() {
         return "943087428:AAEoLmSLXJfsTHbkA-wRIEmhoGKb-8SPrxI";
